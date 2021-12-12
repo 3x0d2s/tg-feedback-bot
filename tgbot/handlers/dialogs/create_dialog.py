@@ -15,7 +15,7 @@ async def create_dialog(call: types.CallbackQuery, repo: Repo):
     operator_name = operator_data["name"]
     await call.bot.send_message(
         chat_id=client_tg_id,
-        text=f"Оператор <b>{operator_name}<b> взялся за ваш тикет. Ожидайте ответа..."
+        text=f"Оператор <b>{operator_name}</b> взялся за ваш тикет.\nОжидайте ответа..."
     )
 
     await call.answer()

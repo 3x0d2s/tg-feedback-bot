@@ -3,13 +3,15 @@ import asyncio
 import logging
 from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
-#from aiogram.contrib.fsm_storage.redis import RedisStorage2
+# from aiogram.contrib.fsm_storage.redis import RedisStorage2
 from tgbot.filters.is_operator import IsOperator
 from tgbot.filters.id_dialog import IsDialog
+from tgbot.middlewares.db import DbMiddleware
+from tgbot.middlewares.album import AlbumMiddleware
 from tgbot.utils.register_handlers import register_handlers
 from tgbot.utils.set_bot_commands import set_default_commands
 from tgbot.data.config import BOT_TOKEN, PG_USERNAME, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB
-from tgbot.middlewares.db import DbMiddleware
+
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +33,7 @@ async def main():
     logger.error("Starting bot")
 
     storage = MemoryStorage()
-    #storage = RedisStorage2()
+    # storage = RedisStorage2()
 
     pool = await create_pool(
         user=PG_USERNAME,
@@ -48,6 +50,7 @@ async def main():
     dp.filters_factory.bind(IsOperator)
     dp.filters_factory.bind(IsDialog)
     dp.middleware.setup(DbMiddleware(pool))
+    dp.middleware.setup(AlbumMiddleware())
     register_handlers(dp)
     await set_default_commands(dp)
 

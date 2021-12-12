@@ -58,6 +58,13 @@ class Repo:
             "client_tg_id": dialog_data[2]
         }
 
+    async def close_dialog(self, operator_tg_id) -> None:
+        """Удаляет диалог, в котором находится указанный оператор."""
+        await self.conn.execute(
+            "DELETE FROM Dialogs WHERE operator_tg_id=$1",
+            operator_tg_id
+        )
+
     async def get_operator_data(self, operator_id=None, operator_tg_id=None) -> typing.Tuple:
         """Возвращает всю информацию об операторе."""
         if operator_id != None:
