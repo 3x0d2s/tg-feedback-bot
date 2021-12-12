@@ -4,7 +4,10 @@ import logging
 from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 #from aiogram.contrib.fsm_storage.redis import RedisStorage2
+from tgbot.filters.is_operator import IsOperator
+from tgbot.filters.id_dialog import IsDialog
 from tgbot.utils.register_handlers import register_handlers
+from tgbot.utils.set_bot_commands import set_default_commands
 from tgbot.data.config import BOT_TOKEN, PG_USERNAME, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB
 from tgbot.middlewares.db import DbMiddleware
 
@@ -42,8 +45,11 @@ async def main():
         parse_mode="html"
     )
     dp = Dispatcher(bot, storage=storage)
+    dp.filters_factory.bind(IsOperator)
+    dp.filters_factory.bind(IsDialog)
     dp.middleware.setup(DbMiddleware(pool))
     register_handlers(dp)
+    await set_default_commands(dp)
 
     # start
     try:

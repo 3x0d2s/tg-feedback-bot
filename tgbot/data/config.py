@@ -6,6 +6,7 @@ env.read_env()
 
 # Bot
 BOT_TOKEN = env.str("BOT_TOKEN")
+OPERATORS_CHAT_ID = env.int("OPERATORS_CHAT_ID")
 # PostgreSQL
 PG_USERNAME = env.str("PG_USERNAME")
 PG_PASSWORD = env.str("PG_PASSWORD")

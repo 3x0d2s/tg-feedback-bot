@@ -5,8 +5,16 @@ from tgbot.services.repository import Repo
 
 async def command_start(msg: types.Message, repo: Repo, state: FSMContext):
     await state.finish()
-    await repo.add_user(msg.from_user.id)
-    await msg.reply("Hello, user!")
+
+    if await repo.check_user_is_operator(msg.from_user.id) == False:
+        await msg.answer(
+            text="Приветствую!\n\nЯ - бот технической поддержки.\n"
+            "Ты можешь написать своё вопрос, а я свяжу тебя с свободным оператором."
+        )
+    else:
+        await msg.answer(
+            text="Приветствую!\n\nВы являетесь оператором, ожидайте новых тикетов."
+        )
 
 
 async def command_cancel(msg: types.Message, state: FSMContext):
