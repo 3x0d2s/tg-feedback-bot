@@ -15,13 +15,23 @@ class Repo:
         )
         return check
 
-    async def add_ticket(self, client_tg_id, msg_id, datetime_msg) -> None:
+    async def add_ticket(self, client_tg_id, ticket_text, datetime_msg) -> None:
         """Добавляет новый тикет."""
         await self.conn.execute(
-            "INSERT INTO Tickets (client_tg_id, msg_id, datetime_msg) VALUES ($1, $2, $3)",
-            client_tg_id, msg_id, datetime_msg
+            "INSERT INTO Tickets (client_tg_id, ticket_text, datetime_msg) VALUES ($1, $2, $3)",
+            client_tg_id, ticket_text, datetime_msg
         )
         return
+
+    async def list_tickets(self) -> typing.List[tuple]:
+        """Возвращает список тикетов."""
+        tickets = await self.conn.fetch(
+            "SELECT * FROM Tickets ORDER BY datetime_msg"
+        )
+        return [{"id": ticket[0],
+                 "client_tg_id": ticket[1],
+                 "ticket_text": ticket[2],
+                 "datetime_msg": ticket[3]} for ticket in tickets]
 
     async def close_ticket(self, client_tg_id) -> None:
         """Удаляет тикет, который создал определённый пользователь."""
