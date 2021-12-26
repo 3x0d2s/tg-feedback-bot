@@ -15,27 +15,28 @@ async def close_dialog(msg: types.Message, repo: Repo):
         text="🔹 Оператор закончил диалог."
     )
 
-    await msg.bot.send_message(
-        chat_id=operator_tg_id,
-        text="🔹 Неотвеченные тикеты:"
-    )
     tickets = await repo.list_tickets()
-    for ticket in tickets:
-        client_tg_id = ticket["client_tg_id"]
-
-        keyboard = types.InlineKeyboardMarkup()
-        take_ticket_btn = types.InlineKeyboardButton(
-            text="Взять тикет",
-            callback_data=f"create_dialog_with_{client_tg_id}"
-        )
-        keyboard.add(take_ticket_btn)
-
+    if len(tickets) > 0:
         await msg.bot.send_message(
             chat_id=operator_tg_id,
-            text=ticket["ticket_text"],
-            reply_markup=keyboard
+            text="🔹 Неотвеченные тикеты:"
         )
-        await sleep(0.5)
+        for ticket in tickets:
+            client_tg_id = ticket["client_tg_id"]
+
+            keyboard = types.InlineKeyboardMarkup()
+            take_ticket_btn = types.InlineKeyboardButton(
+                text="Взять тикет",
+                callback_data=f"create_dialog_with_{client_tg_id}"
+            )
+            keyboard.add(take_ticket_btn)
+
+            await msg.bot.send_message(
+                chat_id=operator_tg_id,
+                text=ticket["ticket_text"],
+                reply_markup=keyboard
+            )
+            await sleep(0.5)
 
 
 def register_handlers_close_dialog(dp: Dispatcher):
