@@ -18,6 +18,7 @@ async def create_dialog(call: types.CallbackQuery, repo: Repo):
         text=f"Оператор <b>{operator_name}</b> взялся за ваш тикет.\nОжидайте ответа..."
     )
 
+    await repo.close_ticket(client_tg_id)
     await call.answer()
 
 

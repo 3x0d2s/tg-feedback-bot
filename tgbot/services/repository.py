@@ -23,6 +23,13 @@ class Repo:
         )
         return
 
+    async def close_ticket(self, client_tg_id) -> None:
+        """Удаляет тикет, который создал определённый пользователь."""
+        await self.conn.execute(
+            "DELETE FROM Tickets WHERE client_tg_id=$1",
+            client_tg_id
+        )
+
     async def list_freedom_operators(self) -> typing.List[int]:
         """Возвращает список готовых взять тикет операторов."""
         operator_tg_ids = await self.conn.fetch(
