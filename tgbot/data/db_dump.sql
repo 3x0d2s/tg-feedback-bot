@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS Dialogs (
 CREATE TABLE IF NOT EXISTS Tickets (
     id SERIAL PRIMARY KEY,
     client_tg_id BIGINT NOT NULL,
-    msg_id BIGINT NOT NULL,
+    ticket_text VARCHAR(4096),
     datetime_msg TIMESTAMP NOT NULL,
     UNIQUE(client_tg_id, msg_id)
 );

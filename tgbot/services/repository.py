@@ -15,6 +15,32 @@ class Repo:
         )
         return check
 
+    async def list_freedom_operators(self) -> typing.List[int]:
+        """Возвращает список готовых взять тикет операторов."""
+        operator_tg_ids = await self.conn.fetch(
+            "SELECT tg_id FROM Operators WHERE is_ready=True"
+        )
+        return [operator_tg_id[0] for operator_tg_id in operator_tg_ids]
+
+    async def get_operator_data(self, operator_id=None, operator_tg_id=None) -> typing.Tuple:
+        """Возвращает всю информацию об операторе."""
+        if operator_id != None:
+            operator_data = await self.conn.fetchrow(
+                "SELECT * FROM Operators WHERE id=$1",
+                operator_id
+            )
+        elif operator_tg_id != None:
+            operator_data = await self.conn.fetchrow(
+                "SELECT * FROM Operators WHERE tg_id=$1",
+                operator_tg_id
+            )
+        return {
+            "id": operator_data[0],
+            "tg_id": operator_data[1],
+            "name": operator_data[2],
+            "is_ready": operator_data[3]
+        }
+
     async def add_ticket(self, client_tg_id, ticket_text, datetime_msg) -> None:
         """Добавляет новый тикет."""
         await self.conn.execute(
@@ -39,13 +65,6 @@ class Repo:
             "DELETE FROM Tickets WHERE client_tg_id=$1",
             client_tg_id
         )
-
-    async def list_freedom_operators(self) -> typing.List[int]:
-        """Возвращает список готовых взять тикет операторов."""
-        operator_tg_ids = await self.conn.fetch(
-            "SELECT tg_id FROM Operators WHERE is_ready=True"
-        )
-        return [operator_tg_id[0] for operator_tg_id in operator_tg_ids]
 
     async def add_dialog(self, operator_tg_id, client_tg_id) -> None:
         """Добавляет новый диалог."""
@@ -81,22 +100,3 @@ class Repo:
             "DELETE FROM Dialogs WHERE operator_tg_id=$1",
             operator_tg_id
         )
-
-    async def get_operator_data(self, operator_id=None, operator_tg_id=None) -> typing.Tuple:
-        """Возвращает всю информацию об операторе."""
-        if operator_id != None:
-            operator_data = await self.conn.fetchrow(
-                "SELECT * FROM Operators WHERE id=$1",
-                operator_id
-            )
-        elif operator_tg_id != None:
-            operator_data = await self.conn.fetchrow(
-                "SELECT * FROM Operators WHERE tg_id=$1",
-                operator_tg_id
-            )
-        return {
-            "id": operator_data[0],
-            "tg_id": operator_data[1],
-            "name": operator_data[2],
-            "is_ready": operator_data[3]
-        }

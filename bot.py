@@ -11,8 +11,6 @@ from tgbot.middlewares.album import AlbumMiddleware
 from tgbot.utils.register_handlers import register_handlers
 from tgbot.utils.set_bot_commands import set_default_commands
 from tgbot.data.config import BOT_TOKEN, PG_USERNAME, PG_PASSWORD, PG_HOST, PG_PORT, PG_DB
-
-
 logger = logging.getLogger(__name__)
 
 
@@ -47,11 +45,15 @@ async def main():
         parse_mode="html"
     )
     dp = Dispatcher(bot, storage=storage)
+    # filters
     dp.filters_factory.bind(IsOperator)
     dp.filters_factory.bind(IsDialog)
+    # middlewares
     dp.middleware.setup(DbMiddleware(pool))
     dp.middleware.setup(AlbumMiddleware())
+    # handlers
     register_handlers(dp)
+    # commands
     await set_default_commands(dp)
 
     # start
