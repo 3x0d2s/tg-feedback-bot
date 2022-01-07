@@ -53,12 +53,12 @@ Status: in development
    ```
 5. Установите необходимые библиотеки:
    ```sh
-   $ pip3 intall -r requirements.txt
+   $ pip3 install -r requirements.txt
    ```
 6. Создание структуры БД:
-  ```sh
-  $ python3 tgbot/data/sql.py
-  ```
+   ```sh
+   $ python3 tgbot/data/sql.py
+   ```
 7. Запуск:
    ```sh
    $ python3 bot.py
