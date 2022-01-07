@@ -45,20 +45,25 @@ Status: in development
    ```sh
    $ cp example.env .env
    ```
-3. Откройте и заполните файл `.env` 
-5. Разверните виртуальное окружение Python:
+3. Откройте и заполните файл `.env` (у вас должна быть запущена БД PostgreSQL)
+4. Разверните виртуальное окружение Python:
    ```sh
    $ python3 -m venv env
    $ source env/bin/activate
    ```
-6. Установите необходимые библиотеки:
+5. Установите необходимые библиотеки:
    ```sh
    $ pip3 intall -r requirements.txt
    ```
+6. Создание структуры БД:
+  ```sh
+  $ python3 tgbot/data/sql.py
+  ```
 7. Запуск:
    ```sh
    $ python3 bot.py
    ```
+
 
 ## Лицензия
 
