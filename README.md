@@ -1,12 +1,11 @@
-# tg-feedback-bot
-
-Status: in development
-
 <!-- PROJECT LOGO -->
 <p align="center">
   <h3 align="center">tg-feedback-bot</h3>
   <p align="center">
     Чат-бот для самых разных сервисов!
+  </p>
+  <p align="center">
+    Status: in development
   </p>
   <p align="center">
     <a href="https://github.com/3x0d2s/chatbot-tech-support/issues">Сообщить об ошибках</a>
